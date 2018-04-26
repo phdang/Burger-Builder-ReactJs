@@ -46,7 +46,7 @@ class BurgerBuilder extends Component {
 
       this.setState({purchasing: false});
 
-      alert('Purchase is gonna proceed');
+      alert('Purchase is gonna proceed soon!');
 
     }
 
