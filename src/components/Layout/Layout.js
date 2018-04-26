@@ -9,6 +9,8 @@ import Toolbar from '../Navigation/Toolbar/Toolbar';
 
 import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
 
+import PropTypes from 'prop-types';
+
 class Layout extends Component {
 
   state = {
@@ -54,5 +56,11 @@ class Layout extends Component {
 
   }
 }
+
+Layout.propTypes = {
+
+  children: PropTypes.element.isRequired
+
+};
 
 export default Layout;
