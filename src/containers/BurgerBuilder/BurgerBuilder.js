@@ -8,20 +8,14 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
-const INGREDIENT_PRICES = {
-
-  salad: 0.25,
-  cheese: 0.25,
-  meat: 0.5,
-  bacon: 0.5
-}
+let INGREDIENT_PRICES = null;
 
 class BurgerBuilder extends Component {
 
     state = {
 
       ingredients: null,
-      totalPrice: 0.25,
+      totalPrice: null,
       purchaseable: false,
       purchasing: false,
       loading: false,
@@ -29,6 +23,15 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
+
+      axios.get('/ingredients_price.json')
+      .then(res => {
+        INGREDIENT_PRICES = res.data;
+        this.setState({totalPrice: res.data.starter});
+      })
+      .catch(error => {
+        this.setState({error: true});
+      });
 
 
       axios.get('/ingredients.json')
@@ -74,6 +77,10 @@ class BurgerBuilder extends Component {
         },
         deliveryMethod: 'fastest'
       }
+
+
+
+
 
       axios.post('/orders.json', order)
       .then(response => {
@@ -133,14 +140,31 @@ class BurgerBuilder extends Component {
 
       const disabledInfo = {...this.state.ingredients};
 
+      //use only for having errors;
+
+      const styleFontError = {textAlign: 'center', fontStyle: 'italic', fontWeight: 'bold', fontSize: '1.2rem'};
+
       for (let key in disabledInfo) {
 
         disabledInfo[key] = disabledInfo[key] === 0;
       }
 
-      let orderSummary = null
-      let burger = this.state.error ? <p>Ingredients can't be loaded!</p> : <Spinner />
-      if (this.state.ingredients) {
+      let orderSummary = null;
+
+      let burger = this.state.error ?
+
+            <Aux>
+
+              <p style={styleFontError}>Ingredients can't be loaded! We're sorry for this inconvenience. We will fix this soon!</p>
+              <p style={styleFontError}>We'll be back. Expect us !</p>
+
+            </Aux>
+
+            :
+
+            <Spinner />
+
+    if (this.state.ingredients && this.state.totalPrice) {
         burger = <Aux>
 
                   <Burger ingredients={this.state.ingredients}/>
@@ -149,7 +173,7 @@ class BurgerBuilder extends Component {
                     ingredientAdded={this.addIngredientHandler}
                     ingredientRemoved={this.removeIngredientHandler}
                     disabled={disabledInfo}
-                    totalPrice={this.state.totalPrice.toFixed(2)}
+                    totalPrice={this.state.totalPrice}
                     purchaseable={this.state.purchaseable}
                     purchasing={this.purchaseHandler}
                   />
