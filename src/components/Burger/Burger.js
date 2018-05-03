@@ -1,8 +1,9 @@
 import React from 'react';
 import classes from './Burger.css';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
-
+import {withRouter} from 'react-router-dom';
 const burger = (props) => {
+
   //transform to an array to use map func
   let transformedIngredient = Object.keys(props.ingredients).map( igKey => {
 
@@ -37,4 +38,4 @@ if (transformedIngredient.length === 0) {
 
 }
 
-export default burger;
+export default withRouter(burger);
