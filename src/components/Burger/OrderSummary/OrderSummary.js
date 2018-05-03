@@ -49,7 +49,7 @@ class OrderSummary extends Component {
 
       </ul>
 
-      <p><strong>Total Price: ${this.props.totalPrice.toFixed(2)}</strong></p>
+      <p><strong>Total Price: ${this.props.totalPrice}</strong></p>
 
       <p>Continue to checkout?</p>
 
@@ -69,7 +69,7 @@ OrderSummary.propTypes = {
   totalPrice: PropTypes.number.isRequired,
   continueOrder: PropTypes.func,
   cancelOrder: PropTypes.func
-  
+
 };
 
 export default OrderSummary;

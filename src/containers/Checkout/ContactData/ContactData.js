@@ -9,6 +9,7 @@ class ContactData extends React.Component {
   state = {
     name : '',
     email: '',
+    mobile: '',
     address: {
       street: '',
       postalCotal: '',
@@ -63,13 +64,17 @@ class ContactData extends React.Component {
 
       form = <form>
 
-        <input className={classes.Input} type="text" name="name" placeholder="Your Name" />
+        <input className={classes.Input} type="text" name="name" required placeholder="Your Name" />
 
-        <input className={classes.Input} type="email" name="email" placeholder="Your Email" />
+        <input className={classes.Input} type="email" name="email" required placeholder="Your Email" />
 
-        <input className={classes.Input} type="text" name="street" placeholder="Your Street" />
+        <input className={classes.Input} type="text" name="mobile" required placeholder="Your Phone Number" />
 
-        <input className={classes.Input} type="text" name="postal" placeholder="Your Postal Code" />
+        <input className={classes.Input} type="text" name="street" required placeholder="Your Street" />
+
+        <input className={classes.Input} type="text" name="postal" required placeholder="Your Postal Code" />
+
+        <Button btnType="Danger" clicked={this.props.cancelOrder}>CANCEL</Button>
 
         <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
 
