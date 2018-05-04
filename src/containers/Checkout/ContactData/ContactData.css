@@ -18,6 +18,22 @@
   font-size: 1rem;
 }
 
+.ValidationErrors {
+
+  width: 90%;
+  border: 1px solid #ff0000;
+  background-color: #f9a498;
+  margin: 10px auto;
+  padding: 15px 0;
+
+}
+
+.ErrorLists {
+  text-align: left;
+  padding: 5px 10px;
+  list-style: inside;
+}
+
 @media (min-width: 600px) {
   .ContactData {
     width: 500px;
