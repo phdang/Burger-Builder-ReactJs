@@ -15,12 +15,10 @@ const order = (props) => {
 
   }
 
-  const styleIg = {textTransform: 'capitalize', margin: '0 8px', border: '1px solid #ccc', padding: '10px'}
-
   let ingredients = null;
 
   if (ingredientsArr.length > 0) {
-    ingredients = ingredientsArr.map(ig => <span style={styleIg} key={ig.name}> {ig.name} ({ig.amount})</span>);
+    ingredients = ingredientsArr.map(ig => <span className={classes.Ingredients} key={ig.name}> {ig.name} ({ig.amount})</span>);
   }
 
   return (
@@ -28,7 +26,7 @@ const order = (props) => {
 
         <p>Ingredients: {ingredients}</p>
 
-        <p>Price: US${props.price}</p>
+        <p><strong><em>Price: US${props.price}</em></strong></p>
 
         <p><em>Purchased at: {props.purchasedAt}</em></p>
     </div>
