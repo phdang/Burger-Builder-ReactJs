@@ -5,102 +5,112 @@ import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 
-
 class ContactData extends React.Component {
 
-  state = {
-    orderForm: {
-      name: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'text',
-          placeholder: 'Your Name'
+  constructor(props) {
+    super(props);
+    this.state = {
+      orderForm: {
+        name: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'text',
+            placeholder: 'Your Name'
+          },
+          value: '',
+          validation: {required: true},
+          valid: false,
+          touched: false
         },
-        value: '',
-        validation: {required: true},
-        valid: false,
-        touched: false
-      },
-      street: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'text',
-          placeholder: 'Street'
+        street: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'text',
+            placeholder: 'Street'
+          },
+          value: '',
+          validation: {required: true, minLength: 6},
+          valid: false,
+          touched: false
         },
-        value: '',
-        validation: {required: true, minLength: 6},
-        valid: false,
-        touched: false
-      },
-      zipcode: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'text',
-          placeholder: 'Your Zip Code'
+        zipcode: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'text',
+            placeholder: 'Your Zip Code'
+          },
+          value: '',
+          validation: {required: true, minLength: 5, maxLength: 5},
+          valid: false,
+          touched: false
         },
-        value: '',
-        validation: {required: true, minLength: 5, maxLength: 5},
-        valid: false,
-        touched: false
-      },
-      country: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'text',
-          placeholder: 'Your Country'
+        country: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'text',
+            placeholder: 'Your Country'
+          },
+          value: '',
+          validation: {required: true, minLength:2},
+          valid: false,
+          touched: false
         },
-        value: '',
-        validation: {required: true, minLength:2},
-        valid: false,
-        touched: false
-      },
-      email: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'email',
-          placeholder: 'Your Email'
+        email: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'email',
+            placeholder: 'Your Email'
+          },
+          value: '',
+          validation: {required: true, email: true},
+          valid: false,
+          touched: false
         },
-        value: '',
-        validation: {required: true, email: true},
-        valid: false,
-        touched: false
-      },
-      mobile: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'text',
-          placeholder: 'Your Mobile'
+        mobile: {
+          elementType: 'input',
+          elementConfig: {
+            type: 'text',
+            placeholder: 'Your Mobile'
+          },
+          value: '',
+          validation: {required: true, minLength: 8, maxLength: 13},
+          valid: false,
+          touched: false
         },
-        value: '',
-        validation: {required: true, minLength: 8, maxLength: 13},
-        valid: false,
-        touched: false
-      },
-      deliveryMethod: {
-        elementType: 'select',
-        elementConfig: {
-          options: [
+        deliveryMethod: {
+          elementType: 'select',
+          elementConfig: {
+            options: [
 
-            {
-            value: 'fastest',
-            displayValue: 'Fatest'
-            },
+              {
+              value: 'fastest',
+              displayValue: 'Fatest'
+              },
 
-            {
-              value: 'cheapest',
-              displayValue: 'Cheapest'
-            }
-                    ]
-        },
-        value: 'fatest',
-        validation: {},
-        valid: true,
-      }
-    },
-    ingredients: null,
-    formIsValid: false,
-    loading: false
+              {
+                value: 'cheapest',
+                displayValue: 'Cheapest'
+              }
+                      ]
+          },
+          value: 'fatest',
+          validation: {},
+          valid: true,
+        }
+      },
+      ingredients: null,
+      formIsValid: false,
+      loading: false
+    };
   }
+
+  componentDidMount() {
+
+    window.scrollTo(0,document.body.scrollHeight);
+    document.getElementsByTagName('input')[0].focus();
+
+  }
+
   // value is a string or number, rules is an object
   checkValidity = (value, rules) => {
 
