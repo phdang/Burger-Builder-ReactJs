@@ -37,7 +37,7 @@ class ContactData extends React.Component {
           elementType: 'input',
           elementConfig: {
             type: 'text',
-            placeholder: 'Your Zip Code'
+            placeholder: 'Your Zip Code with 5 Digits'
           },
           value: '',
           validation: {required: true, minLength: 5, maxLength: 5},
@@ -155,7 +155,17 @@ class ContactData extends React.Component {
 
       const updatedOrderForm = {...this.state.orderForm};
       const updatedFormElement = {...updatedOrderForm[inputIndentifer]};
-      updatedFormElement.value = event.target.value;
+      const valueInput = event.target.value;
+      updatedFormElement.value = valueInput;
+
+      //Zipcode must contain a number with 5 digits and the first digit is != 0
+
+      if (inputIndentifer === 'zipcode') {
+
+        updatedFormElement.value = valueInput.match(/^[1-9][0-9]{0,4}/) !== null ? String(valueInput.match(/^[1-9][0-9]{0,4}/)) : '';
+
+      }
+
       updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
       let touched = updatedFormElement.touched;
       if (!touched) {
