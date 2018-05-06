@@ -4,100 +4,15 @@ import classes from './ContactData.css';
 import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
-
+import orderForm from './orderForm/orderForm';
+import { connect } from 'react-redux';
+import * as actionType from '../../../store/actionType';
 class ContactData extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      orderForm: {
-        name: {
-          elementType: 'input',
-          elementConfig: {
-            type: 'text',
-            placeholder: 'Your Name'
-          },
-          value: '',
-          validation: {required: true},
-          valid: false,
-          touched: false
-        },
-        street: {
-          elementType: 'input',
-          elementConfig: {
-            type: 'text',
-            placeholder: 'Street'
-          },
-          value: '',
-          validation: {required: true, minLength: 6},
-          valid: false,
-          touched: false
-        },
-        zipcode: {
-          elementType: 'input',
-          elementConfig: {
-            type: 'text',
-            placeholder: 'Your Zip Code with 5 Digits'
-          },
-          value: '',
-          validation: {required: true, minLength: 5, maxLength: 5},
-          valid: false,
-          touched: false
-        },
-        country: {
-          elementType: 'input',
-          elementConfig: {
-            type: 'text',
-            placeholder: 'Your Country'
-          },
-          value: '',
-          validation: {required: true, minLength:2},
-          valid: false,
-          touched: false
-        },
-        email: {
-          elementType: 'input',
-          elementConfig: {
-            type: 'email',
-            placeholder: 'Your Email'
-          },
-          value: '',
-          validation: {required: true, email: true},
-          valid: false,
-          touched: false
-        },
-        mobile: {
-          elementType: 'input',
-          elementConfig: {
-            type: 'text',
-            placeholder: 'Your Mobile'
-          },
-          value: '',
-          validation: {required: true, minLength: 8, maxLength: 13},
-          valid: false,
-          touched: false
-        },
-        deliveryMethod: {
-          elementType: 'select',
-          elementConfig: {
-            options: [
-
-              {
-              value: 'fastest',
-              displayValue: 'Fatest'
-              },
-
-              {
-                value: 'cheapest',
-                displayValue: 'Cheapest'
-              }
-                      ]
-          },
-          value: 'fatest',
-          validation: {},
-          valid: true,
-        }
-      },
+      orderForm: orderForm,
       ingredients: null,
       formIsValid: false,
       loading: false
@@ -197,7 +112,7 @@ class ContactData extends React.Component {
 
     const order = {
 
-      ingredients: this.props.ingredients,
+      ingredients: this.props.ings,
       price: this.props.price,
       orderData: formData,
       purchased_at: Date().toString(),
@@ -209,6 +124,8 @@ class ContactData extends React.Component {
         this.setState({loading: false});
         // include history object
         //console.log(this.props);
+        //Reset all the ingredients before forwarding user back to home page
+        this.props.onResetIngredients();
         this.props.history.push('/');
 
     })
@@ -251,7 +168,14 @@ class ContactData extends React.Component {
           }
 
           return (
-            <Input key={formElement.id} elementType={formElement.config.elementType} elementConfig={formElement.config.elementConfig} value={formElement.config.value} invalid={!formElement.config.valid} shouldVadidate={formElement.config.touched} changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
+            <Input
+              key={formElement.id}
+              elementType={formElement.config.elementType}
+              elementConfig={formElement.config.elementConfig}
+              value={formElement.config.value} invalid={!formElement.config.valid}
+              shouldVadidate={formElement.config.touched}
+              changed={(event) => this.inputChangedHandler(event, formElement.id)}
+            />
           );
         })}
 
@@ -293,4 +217,19 @@ class ContactData extends React.Component {
   }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+  return {
+    ings: state.ingredients,
+    price: state.totalPrice
+  }
+}
+
+const dispatchStateToProps = dispatch => {
+
+  return {
+
+    onResetIngredients: () => dispatch({type: actionType.RESET_INGREDIENTS})
+  }
+}
+
+export default connect(mapStateToProps, dispatchStateToProps)(ContactData);
