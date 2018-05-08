@@ -6,7 +6,9 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import orderForm from './orderForm/orderForm';
 import { connect } from 'react-redux';
-import * as actionType from '../../../store/actionType';
+import * as actionType from '../../../store/actions/actionTypes';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as orderActions from '../../../store/actions/index';
 class ContactData extends React.Component {
 
   constructor(props) {
@@ -100,7 +102,6 @@ class ContactData extends React.Component {
 
   orderHandler = (event) => {
     event.preventDefault();
-    this.setState({loading: true});
 
     const formData = {};
 
@@ -118,22 +119,8 @@ class ContactData extends React.Component {
       purchased_at: Date().toString(),
     }
 
-    axios.post('/orders.json', order)
-    .then(response => {
+    this.props.onOrderBurger(order);
 
-        this.setState({loading: false});
-        // include history object
-        //console.log(this.props);
-        //Reset all the ingredients before forwarding user back to home page
-        this.props.onResetIngredients();
-        this.props.history.push('/');
-
-    })
-    .catch(error => {
-
-        this.setState({loading: false});
-
-    });
   }
 
   render () {
@@ -156,7 +143,7 @@ class ContactData extends React.Component {
 
     const errorArray = [];
 
-    if (!this.state.loading) {
+    if (!this.props.loading) {
 
       form = <form onSubmit={this.orderHandler}>
 
@@ -219,17 +206,19 @@ class ContactData extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    ings: state.ingredients,
-    price: state.totalPrice
+    ings: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice,
+    loading: state.order.loading
   }
 }
 
-const dispatchStateToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
 
   return {
 
-    onResetIngredients: () => dispatch({type: actionType.RESET_INGREDIENTS})
+    onResetIngredients: () => dispatch({type: actionType.RESET_INGREDIENTS}),
+    onOrderBurger: (orderData) => dispatch(orderActions.purchaseBurger(orderData))
   }
 }
 
-export default connect(mapStateToProps, dispatchStateToProps)(ContactData);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));
