@@ -53,13 +53,23 @@ class ContactData extends React.Component {
       isValid = value.length <= rules.maxLength && isValid;
     }
 
+    if (rules.name || rules.country) {
+      //$.|?*+(){},:@!#$%^&;"[\]|\\/
+      var re = /^[a-zA-Z]'?[- a-zA-Z]+( [a-zA-Z]+)*$/;
+      //console.log(value.match(re));
+      // value = value.match(re);
+      // console.log(value);
+      isValid = re.test(String(value)) && isValid;
+
+    }
+
     if (rules.email) {
 
-          //Check valid email
+        //Check valid email
 
-          var re = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        re = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-      isValid = re.test(String(value)) && isValid;
+        isValid = re.test(String(value)) && isValid;
     }
 
     return isValid;

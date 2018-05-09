@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-
+import updateState from '../utilities/utilities';
 const initialState = {
   ingredients: null,
   ingredientPrices: null,
@@ -9,45 +9,88 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
 
+
+
   switch (action.type) {
 
     case actionTypes.ADD_INGREDIENT:
-      return {
-        ...state, ingredients: {
-          //deep clone object
-          ...state.ingredients,
-          [action.ingredientName]: state.ingredients[action.ingredientName] + 1
-        },
-        totalPrice: state.totalPrice + state.ingredientPrices[action.ingredientName]
-      }
-    case actionTypes.REMOVE_INGREDIENT:
-      return {
 
-        ...state, ingredients: {
-          //deep clone object
-          ...state.ingredients,
-          [action.ingredientName]: state.ingredients[action.ingredientName] - 1
-        },
+      const updatedAddIngredients = updateState(state.ingredients, {
+
+        [action.ingredientName]: state.ingredients[action.ingredientName] + 1
+
+      });
+
+      const updatedAddState = updateState(state, {
+
+        ingredients: updatedAddIngredients,
+
+        totalPrice: state.totalPrice + state.ingredientPrices[action.ingredientName]
+
+      });
+
+      return updatedAddState;
+
+    case actionTypes.REMOVE_INGREDIENT:
+
+      const updatedRemoveIngredients = updateState(state.ingredients, {
+
+        [action.ingredientName]: state.ingredients[action.ingredientName] - 1
+
+      });
+
+      const updatedRemoveState = updateState(state, {
+
+        ingredients: updatedRemoveIngredients,
+
         totalPrice: state.totalPrice - state.ingredientPrices[action.ingredientName]
-      }
+
+      });
+
+      return updatedRemoveState;
+
     case actionTypes.RESET_INGREDIENTS:
+
       return initialState;
 
     case actionTypes.SET_INGREDIENTS:
-      return {...state, ingredients: {
+
+      const updatedSetIngredients = {
+
         salad: action.ingredients.salad,
         bacon: action.ingredients.bacon,
         cheese: action.ingredients.cheese,
         meat: action.ingredients.meat
 
-      }, error: false};
+      }
+
+      const updatedSetIngredientsState = updateState(state, {
+
+        ingredients: updatedSetIngredients,
+
+        error: false
+
+      })
+
+      return updatedSetIngredientsState;
+
     case actionTypes.SET_INGREDIENT_PRICES:
-      return {...state, ingredientPrices: action.prices, totalPrice: action.prices.starter};
+
+      const updatedSetIngredientPricesState = updateState(state, {
+
+        ingredientPrices: action.prices,
+        totalPrice: action.prices.starter
+
+      });
+
+      return updatedSetIngredientPricesState
 
     case actionTypes.SET_INGREDIENTS_FAIL:
-      return {...state, error: true};
+
+      return updateState(state, {error: true});
 
     default:
+    
       return state;
 
   }

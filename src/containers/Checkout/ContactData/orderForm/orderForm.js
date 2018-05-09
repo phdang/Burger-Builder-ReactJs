@@ -6,7 +6,7 @@ const orderForm = {
       placeholder: 'Your Name'
     },
     value: '',
-    validation: {required: true},
+    validation: {required: true, name: true},
     valid: false,
     touched: false
   },
@@ -39,7 +39,7 @@ const orderForm = {
       placeholder: 'Your Country'
     },
     value: '',
-    validation: {required: true, minLength:2},
+    validation: {required: true, minLength:2, country: true},
     valid: false,
     touched: false
   },
