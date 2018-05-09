@@ -54,11 +54,9 @@ class ContactData extends React.Component {
     }
 
     if (rules.name || rules.country) {
-      //$.|?*+(){},:@!#$%^&;"[\]|\\/
+      
       var re = /^[a-zA-Z]'?[- a-zA-Z]+( [a-zA-Z]+)*$/;
-      //console.log(value.match(re));
-      // value = value.match(re);
-      // console.log(value);
+
       isValid = re.test(String(value)) && isValid;
 
     }
