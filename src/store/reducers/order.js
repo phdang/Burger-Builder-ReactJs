@@ -5,7 +5,8 @@ const initialState = {
 
   orders: [],
   loading: false,
-  purchased: false
+  purchased: false,
+  canMakeOrder: false
 
 }
 
@@ -71,8 +72,11 @@ const reducer = (state = initialState, action) => {
 
         return updateState(state, {loading: false});
 
+      case actionTypes.CAN_MAKE_ORDER:
+        return updateState(state, {canMakeOrder: true});
+
       default:
-      
+
         return state;
     }
 }

@@ -37,9 +37,9 @@ class Layout extends Component {
 
       <Aux>
 
-        <Toolbar clicked={this.sideDrawerOpenedHandler}/>
+        <Toolbar isAuthenticated={this.props.isAuthenticated} clicked={this.sideDrawerOpenedHandler}/>
 
-        <SideDrawer closed={this.sideDrawerClosedHandler} open={this.state.showSideDrawer} />
+        <SideDrawer isAuthenticated={this.props.isAuthenticated} closed={this.sideDrawerClosedHandler} open={this.state.showSideDrawer} />
 
         <div>Toolbar, SideDrawer, Backdrop</div>
 

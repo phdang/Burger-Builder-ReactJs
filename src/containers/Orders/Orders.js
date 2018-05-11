@@ -9,7 +9,7 @@ class Orders extends React.Component {
 
   componentDidMount() {
 
-    this.props.onFetchingOrders();
+    this.props.onFetchingOrders(this.props.idToken, this.props.userId);
 
   }
 
@@ -33,12 +33,12 @@ class Orders extends React.Component {
   }
 }
 const mapStateToProps = state => {
-  return {orders: state.order.orders, loading: state.order.loading}
+  return {orders: state.order.orders, loading: state.order.loading, idToken: state.auth.idToken, userId: state.auth.localId}
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchingOrders: () => dispatch(actions.fetchingOrders())
+    onFetchingOrders: (idToken, userId) => dispatch(actions.fetchingOrders(idToken, userId))
   };
 }
 

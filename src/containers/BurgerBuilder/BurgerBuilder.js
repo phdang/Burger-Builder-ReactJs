@@ -44,7 +44,21 @@ class BurgerBuilder extends Component {
 
     purchaseHandler = () => {
 
-      this.setState({purchasing: true});
+      if (this.props.isAuthenticated) {
+
+        this.setState({purchasing: true});
+
+      } else {
+
+        this.props.onCanMakeOrder();
+
+        this.props.history.push({
+
+          pathname: '/signin'
+
+        });
+
+      }
     }
 
     purchaseCancelHandler = () => {
@@ -59,6 +73,7 @@ class BurgerBuilder extends Component {
         pathname: '/checkout'
 
       });
+
     }
 
     updatePurchaseable(ingredients = this.props.ings) {
@@ -137,6 +152,7 @@ class BurgerBuilder extends Component {
                     ingredientRemoved={this.props.onIngredientRemoved}
                     disabled={disabledInfo}
                     totalPrice={this.props.price}
+                    isAuth = {this.props.isAuthenticated}
                     purchaseable={this.updatePurchaseable() /* funtion with () 'cause it needs to be executed once the component is rendered */}
                     purchasing={this.purchaseHandler}
                   />
@@ -184,7 +200,8 @@ const mapStateToProps = state => {
     ings: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
     error: state.burgerBuilder.error,
-    purchased: state.order.purchased
+    purchased: state.order.purchased,
+    isAuthenticated: state.auth.idToken
   }
 }
 
@@ -196,7 +213,8 @@ const mapDispatchToProps = dispatch => {
     onIngredientRemoved: (ingName) => dispatch(actions.removeIngredient(ingName)),
     onFetchingIngredients: () => dispatch(actions.fetchingIngredients()),
     onResetIngredients: () => dispatch(actions.resetIngredients()),
-    onResetOrder: () => dispatch(actions.resetOrder())
+    onResetOrder: () => dispatch(actions.resetOrder()),
+    onCanMakeOrder: () => dispatch(actions.canMakeOrder())
 
   }
 

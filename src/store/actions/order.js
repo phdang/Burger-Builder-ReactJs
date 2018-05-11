@@ -11,9 +11,10 @@ export const purchaseOrderSuccess = (id, data) => {
 };
 export const purchaseOrderFail = () => (error) => ({type: actionTypes.PURCHASE_ORDER_FAIL, error: error});
 const purchaseBurgerStart = () => ({type: actionTypes.PURCHASE_ORDER_START});
-export const purchaseBurger = (orderData) => dispatch => {
-  dispatch(purchaseBurgerStart())
-  axios.post('/orders.json', orderData)
+export const purchaseBurger = (orderData, idToken) => dispatch => {
+  dispatch(purchaseBurgerStart());
+  const queryParams = "?auth=" + idToken;
+  axios.post('/orders.json' + queryParams, orderData)
   .then(response => {
 
       dispatch(purchaseOrderSuccess(response.data.name, orderData));
@@ -36,9 +37,10 @@ export const resetOrder = () => ({type: actionTypes.RESET_ORDER});
 export const fetchingOrdersSuccess = (orders) => ({type: actionTypes.FETCHING_ORDERS_SUCCESS, orders: orders});
 export const fetchingOrdersFail = (error) => ({type: actionTypes.FETCHING_ORDERS_FAIL, error: error});
 export const fetchingOrdersStart = () => ({type: actionTypes.FETCHING_ORDERS_START});
-export const fetchingOrders = () => dispatch => {
+export const fetchingOrders = (idToken, userId) => dispatch => {
   dispatch(fetchingOrdersStart());
-  axios.get('/orders.json').then(res => {
+  const queryParams = "?auth=" + idToken + '&orderBy="userId"&equalTo="' + userId + '"' ;
+  axios.get('/orders.json' + queryParams).then(res => {
 
     const fetchedOrders = [];
 
@@ -56,3 +58,4 @@ export const fetchingOrders = () => dispatch => {
   });
 
 }
+export const canMakeOrder = () => ({type:actionTypes.CAN_MAKE_ORDER});

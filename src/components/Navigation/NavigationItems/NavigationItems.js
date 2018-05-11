@@ -1,29 +1,77 @@
-import React from 'react';
+import React, {Component} from 'react';
 import classes from './NavigationItems.css';
 import NavigationItem from './NavigationItem/NavigationItem';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import Aux from '../../../hoc/Aux/Aux';
+//convert into class to debug
+const navigationItems = class extends Component {
 
-const navigationItems = (props) => {
+  render() {
 
-  return (
+    const navItems = this.props.isAuthenticated ?
 
-    <ul className={classes.NavigationItems}>
+    <Aux>
 
-        <NavigationItem link="/" exact>
+      <NavigationItem link="/" exact>
 
-          Burger Builder
+        Burger Builder
 
-        </NavigationItem>
+      </NavigationItem>
 
-        <NavigationItem link="/orders">
+      <NavigationItem link="/orders">
 
-          Orders
+        Orders
 
-        </NavigationItem>
+      </NavigationItem>
 
-    </ul>
-  );
 
+      <NavigationItem link="/signout">
+
+        Sign out
+
+      </NavigationItem>
+
+    </Aux>
+
+    :
+
+    <Aux>
+
+      <NavigationItem link="/" exact>
+
+        Burger Builder
+
+      </NavigationItem>
+
+      <NavigationItem link="/signin" >
+
+        Sign in
+
+      </NavigationItem>
+
+
+    </Aux>
+
+
+    return (
+
+      <ul className={classes.NavigationItems}>
+
+        {navItems}
+
+      </ul>
+    );
+  }
 
 }
 
-export default navigationItems;
+const mapStateToProps = state => {
+
+  return {
+
+    isAuthenticated: state.auth.idToken !== null
+  }
+};
+
+export default withRouter(connect(mapStateToProps)(navigationItems));

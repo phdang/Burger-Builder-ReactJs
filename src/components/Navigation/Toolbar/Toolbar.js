@@ -26,11 +26,12 @@ const toolbar = (props) => {
 
       <nav className={classes.DesktopOnly}>
 
-        <NavigationItems />
+        <NavigationItems isAuth={props.isAuthenticated}/>
 
       </nav>
 
     </header>
   );
 }
+
 export default toolbar;
